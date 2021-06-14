@@ -1,0 +1,17 @@
+import structlog
+
+import logging_config
+from TerminalController.PartieController import PartieController
+
+logger = structlog.getLogger(__name__)
+
+
+def start_le_jeu():
+    logging_config.configLogging()
+    logger.info("Lancement de la partie")
+    partieController = PartieController()
+    partieController.configurePartie()
+
+
+if __name__ == '__main__':
+    start_le_jeu()
