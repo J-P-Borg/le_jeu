@@ -11,7 +11,7 @@ class Partie:
     """
 
     def __init__(self) -> object:
-        self.sabot = list(range(1, 100))
+        self.sabot = list(range(2, 100))
         rd.shuffle(self.sabot)
         logger.debug(f"Sabot : {self.sabot}")
 
