@@ -11,7 +11,7 @@ def start_le_jeu():
     Fonction à appeler pour lancer une partie
     :return:
     """
-    logging_config.configLogging()
+    logging_config.configLogging(terminal=False)
     logger.info("Lancement de la partie")
     partieController = PartieController()
     partieController.configurePartie()

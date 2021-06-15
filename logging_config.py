@@ -3,11 +3,12 @@ import logging.config
 import structlog
 
 
-def configLogging():
+def configLogging(terminal=True):
     """
     Configure le logging
     Utilise structlog et une dictconfig
     Seul le logger de structlog devrait être utilisé
+    :param terminal: booleen qui indique si les logs doivent être affichés dans la console
     """
     timestamper = structlog.processors.TimeStamper(fmt="%Y-%m-%d %H:%M:%S")
     LOGGING_CONFIG = {
@@ -38,11 +39,13 @@ def configLogging():
         },
         "loggers": {
             "": {
-                "handlers": ["default", "file"],
+                "handlers": ["file"],
                 "level": "DEBUG",
                 "propagate": True,
             },
         }}
+    if terminal:
+        LOGGING_CONFIG["loggers"][""]["handlers"].append("default")
     logging.config.dictConfig(LOGGING_CONFIG)
     structlog.configure(
         processors=[
