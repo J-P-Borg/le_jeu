@@ -4,6 +4,11 @@ import structlog
 
 
 def configLogging():
+    """
+    Configure le logging
+    Utilise structlog et une dictconfig
+    Seul le logger de structlog devrait être utilisé
+    """
     timestamper = structlog.processors.TimeStamper(fmt="%Y-%m-%d %H:%M:%S")
     LOGGING_CONFIG = {
         "version": 1,
