@@ -7,7 +7,7 @@ logger = structlog.getLogger(__name__)
 
 class PartieController:
     def __init__(self):
-        logger.info("Creation du controller")
+        logger.info("Creation du controller de partie")
         self.partie = Partie()
 
     def configurePartie(self):
