@@ -13,11 +13,14 @@ class PartieController:
     def configurePartie(self):
         """
         Va appeler les différentes fonctions de config d'une partie
+        * Configurer le nombre de joueur
+        * Distribuer les mains initiales
         :return:
         """
         from TerminalView import PartieView
         logger.info("Config de la partie dans le controller")
         PartieView.configure_nb_joueur(self)
+        self.partie.distribueMainsInitiales()
 
     def configureNbJoueur(self, nbJoueur: int):
         """
@@ -27,3 +30,4 @@ class PartieController:
         logger.info(f"configuration du nombre de joueur, {nbJoueur} demandés")
         logger.debug(f"type de nbJoueur : {type(nbJoueur)}")
         self.partie.set_nb_joueur(nb_joueur=nbJoueur)
+
