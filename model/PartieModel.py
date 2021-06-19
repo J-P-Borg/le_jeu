@@ -14,8 +14,8 @@ class Partie:
         self.sabot = list(range(2, 100))
         rd.shuffle(self.sabot)
         logger.debug(f"Sabot : {self.sabot}")
-        self.piles_descendantes = [[], []]
-        self.piles_montantes = [[], []]
+        self.piles_descendantes = [[100], [100]]
+        self.piles_montantes = [[1], [1]]
 
     def check_config(self, id_joueur: int):
         """
