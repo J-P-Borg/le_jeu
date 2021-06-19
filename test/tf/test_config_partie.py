@@ -7,10 +7,13 @@ def test_config_partie_nb_correct(monkeypatch):
     avec un nmobre de joueur correct
     :return:
     """
+    nb_joueur = 5
     controller = PartieController()
-    monkeypatch.setattr('builtins.input', lambda _: "5")
+    controller.partie.sabot = list(range(2, 100))
+    monkeypatch.setattr('builtins.input', lambda _: str(nb_joueur))
     controller.configurePartie()
-    assert controller.partie.nb_joueur == 5
+    assert controller.partie.nb_joueur == nb_joueur
+    assert controller.partie.list_mains == [list(range(99 - i * 6, 99 - (i + 1) * 6, -1)) for i in range(5)]
 
 
 def test_config_partie_nb_incorrect():
