@@ -26,7 +26,10 @@ class Partie:
         if nb_joueur in range(1, 6):
             logger.info("nombre de joueur correct")
             self.nb_joueur = nb_joueur
-            self.list_mains = [[] * nb_joueur]
+            self.set_taille_main()
+            self.list_mains = [[]] * nb_joueur
+            logger.info(f"taille_main =: {self.taille_main}")
+            logger.debug(f"list_mains : {self.list_mains}")
         else:
             logger.warning("nombre de joueur incorrect")
             raise ValueError("Nombre de joueur incorrect")
@@ -41,8 +44,10 @@ class Partie:
         :raises: AttributeError si le nombre de joueur n'est pas défini
         """
         try:
+            logger.info("Config de la taille des mains")
             self.taille_main = 6 + (self.nb_joueur <= 2) + (self.nb_joueur == 1)
         except:
+            logger.error("Le nombre de joueur n'a pas été défini, doit l'être avant l'appel de cette fonction")
             raise AttributeError("le nombre de joueur n'est pas défini")
 
     def complete_main(self, id_joueur: int):
@@ -53,10 +58,18 @@ class Partie:
         :return:
         """
         try:
+            logger.info("Vérifie que taille_main et nb_joueur sont définis")
             self.taille_main
             self.nb_joueur
         except:
+            logger.warning("taille_main aurait du être défini, non critique (tentative de définition ici)")
             self.set_taille_main()
-        assert 0 <= id_joueur <= self.nb_joueur
+        logger.info(f"Vérifie que l'id_joueur {id_joueur} est valide")
+        assert 0 <= id_joueur < self.nb_joueur
+        logger.debug(f"Id joueur : {id_joueur}")
+        logger.info(f"Main du joueur avant ajout de cartes : {self.list_mains[id_joueur]}")
         for _ in range(min(self.taille_main - len(self.list_mains[id_joueur]), len(self.sabot))):
+            logger.debug(f"Carte ajoutée : {self.sabot[-1]}")
             self.list_mains[id_joueur].append(self.sabot.pop())
+            logger.debug(f"Main après ajout : {self.list_mains[id_joueur]}")
+            logger.debug(f"Sabot après ajout : {self.sabot}")
