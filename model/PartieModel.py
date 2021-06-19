@@ -27,7 +27,7 @@ class Partie:
             logger.info("nombre de joueur correct")
             self.nb_joueur = nb_joueur
             self.set_taille_main()
-            self.list_mains = [[]] * nb_joueur
+            self.list_mains = [[] for _ in range(self.nb_joueur)]
             logger.info(f"taille_main =: {self.taille_main}")
             logger.debug(f"list_mains : {self.list_mains}")
         else:
@@ -49,6 +49,14 @@ class Partie:
         except:
             logger.error("Le nombre de joueur n'a pas été défini, doit l'être avant l'appel de cette fonction")
             raise AttributeError("le nombre de joueur n'est pas défini")
+
+    def distribueMainsInitiales(self):
+        """
+        Distribue toutes les mains initiales
+        :return: 
+        """
+        for id_joueur in range(self.nb_joueur):
+            self.complete_main(id_joueur=id_joueur)
 
     def complete_main(self, id_joueur: int):
         """
