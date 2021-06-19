@@ -3,7 +3,7 @@ import logging.config
 import structlog
 
 
-def configLogging(terminal=True):
+def config_logging(terminal=True):
     """
     Configure le logging
     Utilise structlog et une dictconfig
@@ -11,7 +11,7 @@ def configLogging(terminal=True):
     :param terminal: booleen qui indique si les logs doivent être affichés dans la console
     """
     timestamper = structlog.processors.TimeStamper(fmt="%Y-%m-%d %H:%M:%S")
-    LOGGING_CONFIG = {
+    logging_config = {
         "version": 1,
         "disable_existing_loggers": False,
         "formatters": {
@@ -45,8 +45,8 @@ def configLogging(terminal=True):
             },
         }}
     if terminal:
-        LOGGING_CONFIG["loggers"][""]["handlers"].append("default")
-    logging.config.dictConfig(LOGGING_CONFIG)
+        logging_config["loggers"][""]["handlers"].append("default")
+    logging.config.dictConfig(logging_config)
     structlog.configure(
         processors=[
             structlog.stdlib.add_log_level,
