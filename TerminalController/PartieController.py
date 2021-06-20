@@ -7,8 +7,12 @@ logger = structlog.getLogger(__name__)
 
 class PartieController:
     def __init__(self):
+        """
+        joueur : indice du joueur qui doit faire son tour
+        """
         logger.info("Creation du controller de partie")
         self.partie = Partie()
+        self.joueur = 0
 
     def configurePartie(self):
         """
@@ -30,4 +34,3 @@ class PartieController:
         logger.info(f"configuration du nombre de joueur, {nbJoueur} demandés")
         logger.debug(f"type de nbJoueur : {type(nbJoueur)}")
         self.partie.set_nb_joueur(nb_joueur=nbJoueur)
-

@@ -2,6 +2,7 @@ import random as rd
 
 import structlog
 
+
 logger = structlog.getLogger(__name__)
 
 
@@ -14,6 +15,7 @@ class Partie:
         self.sabot = list(range(2, 100))
         rd.shuffle(self.sabot)
         logger.debug(f"Sabot : {self.sabot}")
+        self.list_joueur = []
         self.piles_descendantes = [[100], [100]]
         self.piles_montantes = [[1], [1]]
 
@@ -40,16 +42,18 @@ class Partie:
         """
         :param nb_joueur: nombre de joueur de la partie
         Va affecter le nombre de joueur, et vérifie qu'il est valide (entre 1 et 5 inclus)
+        Instancie les joueurs
         :raises: ValueError, si le nombre de joueur n'est pas valide
         """
+        from model.JoueurModel import Joueur
         logger.info(f"Config du nombre de joueur, {nb_joueur} joueurs")
         if nb_joueur in range(1, 6):
             logger.info("nombre de joueur correct")
             self.nb_joueur = nb_joueur
             self.set_taille_main()
-            self.list_mains = [[] for _ in range(self.nb_joueur)]
+            self.list_joueur = [Joueur(id=i, partie=self) for i in range(self.nb_joueur)]
             logger.info(f"taille_main =: {self.taille_main}")
-            logger.debug(f"list_mains : {self.list_mains}")
+            logger.debug(f"list_joueur: {self.list_joueur}")
         else:
             logger.warning("nombre de joueur incorrect")
             raise ValueError("Nombre de joueur incorrect")
@@ -75,50 +79,7 @@ class Partie:
         Distribue toutes les mains initiales
         :return: 
         """
-        for id_joueur in range(self.nb_joueur):
-            self.complete_main(id_joueur=id_joueur)
-
-    def complete_main(self, id_joueur: int):
-        """
-        Distribue dans la main du joueur id_joueur le nombre de carte nécessaire pour qu'il ait une main valide
-        (cf taille_main : variable globale de taille de main, selon le nombre de joueur)
-        :param id_joueur: id du joueur (indice du jeu à compléter)
-        :return:
-        """
-        self.check_config(id_joueur=id_joueur)
-        logger.debug(f"Id joueur : {id_joueur}")
-        logger.info(f"Main du joueur avant ajout de cartes : {self.list_mains[id_joueur]}")
-        for _ in range(min(self.taille_main - len(self.list_mains[id_joueur]), len(self.sabot))):
-            logger.debug(f"Carte ajoutée : {self.sabot[-1]}")
-            self.list_mains[id_joueur].append(self.sabot.pop())
-            logger.debug(f"Main après ajout : {self.list_mains[id_joueur]}")
-            logger.debug(f"Sabot après ajout : {self.sabot}")
-
-    def jouer_carte(self, id_joueur: int, numero_carte: int, montante: bool, id_pile: int):
-        """
-        joue une carte, vérifie qu'elle est dans la main du joueur
-        :param id_joueur: numéro du joueur
-        :param numero_carte: valeur de la carte à jouer (pas l'indice)
-        :param montante: true si jouer sur pile montante
-        :param id_pile: entre 0 et 1
-        :return: 
-        """
-        self.check_config(id_joueur)
-        # Vérifie que la carte
-        assert numero_carte in self.list_mains[id_joueur]
-        # Vérifie que la pile demandée est valide
-        assert 0 <= id_pile <= 1
-        # Vérifie que la carte est jouable
-        if montante:
-            derniere_carte = self.piles_montantes[id_pile][-1]
-            assert (numero_carte > derniere_carte) or (numero_carte == derniere_carte - 10)
-        else:
-            derniere_carte = self.piles_descendantes[id_pile][-1]
-            assert (numero_carte < derniere_carte) or (numero_carte == derniere_carte + 10)
-        # Retirer la carte de la main du joueur
-        self.list_mains[id_joueur].remove(numero_carte)
-        # L'ajouter dans la pile demandée
-        if montante:
-            self.piles_montantes[id_pile].append(numero_carte)
-        else:
-            self.piles_descendantes[id_pile].append(numero_carte)
+        logger.info("Distribution des mains de départ")
+        logger.debug(f"liste des joueurs : {self.list_joueur}")
+        for joueur in self.list_joueur:
+            joueur.complete_main()

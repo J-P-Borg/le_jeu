@@ -27,8 +27,8 @@ def test_distribution_cartes():
             partie = Partie()
             partie.set_nb_joueur(nb_joueur=nb_joueur)
             partie.sabot = list(range(10))
-            partie.complete_main(id_joueur=id_joueur)
-            assert partie.sabot + list(reversed(partie.list_mains[id_joueur])) == list(range(10))
+            partie.list_joueur[id_joueur].complete_main()
+            assert partie.sabot + list(reversed(partie.list_joueur[id_joueur].main)) == list(range(10))
 
 
 def test_distribution_sabot_vide():
@@ -40,21 +40,6 @@ def test_distribution_sabot_vide():
     partie = Partie()
     partie.set_nb_joueur(3)
     partie.sabot = list(range(4))
-    partie.complete_main(1)
+    partie.list_joueur[1].complete_main()
     assert partie.sabot == []
-    assert partie.list_mains[1] == list(range(3, -1, -1))
-
-
-def test_distribution_cartes_id_joueur_incorrect():
-    """
-    Vérifie qu'une erreur est levée si l'id de joueur est incorrect
-    :return:
-    """
-    partie = Partie()
-    partie.set_nb_joueur(3)
-    with pytest.raises(AssertionError):
-        partie.complete_main(-1)
-    with pytest.raises(AssertionError):
-        partie.complete_main(3)
-    with pytest.raises(TypeError):
-        partie.complete_main(2.0)
+    assert partie.list_joueur[1].main == list(range(3, -1, -1))

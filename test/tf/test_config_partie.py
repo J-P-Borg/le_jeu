@@ -1,3 +1,5 @@
+import itertools
+
 from TerminalController.PartieController import PartieController
 
 
@@ -13,7 +15,9 @@ def test_config_partie_nb_correct(monkeypatch):
     monkeypatch.setattr('builtins.input', lambda _: str(nb_joueur))
     controller.configurePartie()
     assert controller.partie.nb_joueur == nb_joueur
-    assert controller.partie.list_mains == [list(range(99 - i * 6, 99 - (i + 1) * 6, -1)) for i in range(5)]
+    mains_attendues = [list(range(99 - i * 6, 99 - (i + 1) * 6, -1)) for i in range(5)]
+    for joueur, main_attendue in zip(controller.partie.list_joueur, mains_attendues):
+        assert joueur.main == main_attendue
 
 
 def test_config_partie_nb_incorrect():
