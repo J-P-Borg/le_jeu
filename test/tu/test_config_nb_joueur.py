@@ -11,7 +11,9 @@ def test_nb_joueur_incorrect():
     partie = Partie()
     with pytest.raises(ValueError):
         partie.set_nb_joueur(6)
+    with pytest.raises(TypeError):
         partie.set_nb_joueur("5")
+    with pytest.raises(TypeError):
         partie.set_nb_joueur(5.0)
 
 

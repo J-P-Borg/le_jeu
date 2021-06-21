@@ -44,7 +44,11 @@ class Partie:
         Va affecter le nombre de joueur, et vérifie qu'il est valide (entre 1 et 5 inclus)
         Instancie les joueurs
         :raises: ValueError, si le nombre de joueur n'est pas valide
+        :raises: TypeError si le type de nb_joueur n'est pas valide
         """
+        if not type(nb_joueur) == int:
+            logger.error(f"appel de set_nb_joueur avec un mauvais type ({type(nb_joueur)} au lieu de int")
+            raise TypeError("Le nombre de joueur doit être de type int")
         from model.JoueurModel import Joueur
         logger.info(f"Config du nombre de joueur, {nb_joueur} joueurs")
         if nb_joueur in range(1, 6):
@@ -55,7 +59,8 @@ class Partie:
             logger.info(f"taille_main =: {self.taille_main}")
             logger.debug(f"list_joueur: {self.list_joueur}")
         else:
-            logger.warning("nombre de joueur incorrect")
+            logger.warning(
+                f"nombre de joueur {nb_joueur} incorrect, car {nb_joueur} dans range(1,6) : {nb_joueur in range(1, 6)}")
             raise ValueError("Nombre de joueur incorrect")
 
     def set_taille_main(self):
