@@ -35,13 +35,7 @@ class Joueur:
         :return:
         """
         logger.info(f"Completion main joueur {self.id}")
-        try:
-            logger.info("Vérifie que taille_main et nb_joueur sont définis")
-            self.partie.taille_main
-            self.partie.nb_joueur
-        except:
-            logger.warning("taille_main aurait du être défini, non critique (tentative de définition ici)")
-            self.partie.set_taille_main()
+        self.partie.check_config(self.id)
         logger.debug(f"Id joueur : {self.id}")
         logger.info(f"Main du joueur avant ajout de cartes : {self.main}")
         for _ in range(min(self.partie.taille_main - len(self.main), len(self.partie.sabot))):
