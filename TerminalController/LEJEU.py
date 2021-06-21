@@ -14,7 +14,7 @@ def start_le_jeu():
     logging_config.config_logging(terminal=False)
     logger.info("Lancement de la partie")
     partieController = PartieController()
-    partieController.configurePartie()
+    partieController.jouerPartie()
 
 
 if __name__ == '__main__':
