@@ -31,7 +31,7 @@ class Joueur:
         """
         Distribue dans la main du joueur self.self.id le nombre de carte nécessaire pour qu'il ait une main valide
         (cf taille_main : variable globale de taille de main, selon le nombre de joueur)
-        :param self.self.id: id du joueur (indice du jeu à compléter)
+        :param self.id: id du joueur (indice du jeu à compléter)
         :return:
         """
         logger.info(f"Completion main joueur {self.id}")
@@ -56,19 +56,28 @@ class Joueur:
         :param numero_carte: valeur de la carte à jouer (pas l'indice)
         :param montante: true si jouer sur pile montante
         :param id_pile: entre 0 et 1
+        :raises AssertionError: erreur si la carte n'est pas valide
         :return:
         """
         self.partie.check_config(self.id)
         # Vérifie que la carte
+        logger.info(f"demande pour jouer la carte {numero_carte} pour le joueur {self.id}")
+        logger.debug(f"Main du joueur : {self.main}")
+        logger.info("Vérification carte dans main")
         assert numero_carte in self.main
-        # Vérifie que la pile demandée est valide
+        # Vérifie que la pile demandée est valide&
+        logger.info("Vérification indice de pile entre 0 et 1")
         assert 0 <= id_pile <= 1
         # Vérifie que la carte est jouable
         if montante:
             derniere_carte = self.partie.piles_montantes[id_pile][-1]
+            logger.debug(f"Dernière carte pile demandée : {derniere_carte}")
+            logger.info("Vérification carte jouable")
             assert (numero_carte > derniere_carte) or (numero_carte == derniere_carte - 10)
         else:
             derniere_carte = self.partie.piles_descendantes[id_pile][-1]
+            logger.debug(f"Dernière carte pile demandée : {derniere_carte}")
+            logger.info("Vérification carte jouable")
             assert (numero_carte < derniere_carte) or (numero_carte == derniere_carte + 10)
         # Retirer la carte de la main du joueur
         self.main.remove(numero_carte)
