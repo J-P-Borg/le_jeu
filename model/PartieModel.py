@@ -2,6 +2,7 @@ import random as rd
 
 import structlog
 
+from model.message_erreur import ID_JOUEUR_INCORRECT
 
 logger = structlog.getLogger(__name__)
 
@@ -36,7 +37,7 @@ class Partie:
             logger.warning("taille_main aurait du être défini, non critique (tentative de définition ici)")
             self.set_taille_main()
         logger.info(f"Vérifie que l'id_joueur {id_joueur} est valide")
-        assert 0 <= id_joueur < self.nb_joueur
+        assert 0 <= id_joueur < self.nb_joueur, ID_JOUEUR_INCORRECT
 
     def set_nb_joueur(self, nb_joueur: int):
         """

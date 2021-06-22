@@ -1,5 +1,8 @@
 import structlog
 
+from model.message_erreur import MESSAGE_CARTE_PAS_DANS_MAIN, ID_JOUEUR_INCORRECT, NUMERO_PILE_INCORRECT, \
+    CARTE_TROP_PETITE, CARTE_TROP_GRANDE
+
 logger = structlog.getLogger(__name__)
 
 
@@ -13,7 +16,7 @@ class Joueur:
         """
         self.partie = partie
         logger.info(f"Vérifie que l'id {id} est valide")
-        assert 0 <= id < self.partie.nb_joueur
+        assert 0 <= id < self.partie.nb_joueur, ID_JOUEUR_INCORRECT
         self.id = id
         self.main = []
 
@@ -58,21 +61,21 @@ class Joueur:
         logger.info(f"demande pour jouer la carte {numero_carte} pour le joueur {self.id}")
         logger.debug(f"Main du joueur : {self.main}")
         logger.info("Vérification carte dans main")
-        assert numero_carte in self.main
+        assert numero_carte in self.main, MESSAGE_CARTE_PAS_DANS_MAIN
         # Vérifie que la pile demandée est valide&
         logger.info("Vérification indice de pile entre 0 et 1")
-        assert 0 <= id_pile <= 1
+        assert 0 <= id_pile <= 1, NUMERO_PILE_INCORRECT
         # Vérifie que la carte est jouable
         if montante:
             derniere_carte = self.partie.piles_montantes[id_pile][-1]
             logger.debug(f"Dernière carte pile demandée : {derniere_carte}")
             logger.info("Vérification carte jouable")
-            assert (numero_carte > derniere_carte) or (numero_carte == derniere_carte - 10)
+            assert (numero_carte > derniere_carte) or (numero_carte == derniere_carte - 10), CARTE_TROP_PETITE
         else:
             derniere_carte = self.partie.piles_descendantes[id_pile][-1]
             logger.debug(f"Dernière carte pile demandée : {derniere_carte}")
             logger.info("Vérification carte jouable")
-            assert (numero_carte < derniere_carte) or (numero_carte == derniere_carte + 10)
+            assert (numero_carte < derniere_carte) or (numero_carte == derniere_carte + 10), CARTE_TROP_GRANDE
         # Retirer la carte de la main du joueur
         self.main.remove(numero_carte)
         # L'ajouter dans la pile demandée

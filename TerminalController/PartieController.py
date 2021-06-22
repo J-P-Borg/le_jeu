@@ -1,13 +1,13 @@
 import structlog
 
 from model.PartieModel import Partie
+from model.message_erreur import PAS_ASSEZ_CARTES_JOUEES
 
 logger = structlog.getLogger(__name__)
 
 
 class PartieController:
-    notEnoughCarteJouee = "Vous n'avez pas joué assez de cartes"
-    carteInvalide = "Vous avez joué une carte invalide"
+
 
     def __init__(self):
         """
@@ -79,9 +79,9 @@ class PartieController:
                     self.partie.list_joueur[self.joueur].jouer_carte(id_pile=id_pile, montante=montante,
                                                                      numero_carte=action)
                 # Si la carte est invalide, on redemande une carte
-                except:
+                except Exception as e:
                     logger.warning("La carte est invalide")
-                    action, montante, id_pile = PartieView.afficher_jeu(self, message=PartieController.carteInvalide)
+                    action, montante, id_pile = PartieView.afficher_jeu(self, message=e)
                 # Sinon on demande la prochaine action du joueur
                 else:
                     action, montante, id_pile = PartieView.afficher_jeu(self, )
