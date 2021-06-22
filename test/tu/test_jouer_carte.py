@@ -14,16 +14,16 @@ def test_jouer_descandante_valide():
     joueur0 = partie.list_joueur[0]
     joueur0.complete_main()
     joueur0.jouer_carte(numero_carte=99, montante=False, id_pile=0)
-    assert joueur0.main == [87, 4, 3, 2, 97, 98]
+    assert joueur0.main == [2, 3, 4, 87, 97, 98]
     assert partie.piles_descendantes == [[100, 99], [100]]
     joueur0.jouer_carte(numero_carte=98, montante=False, id_pile=0)
-    assert joueur0.main == [87, 4, 3, 2, 97]
+    assert joueur0.main == [2, 3, 4, 87, 97]
     assert partie.piles_descendantes == [[100, 99, 98], [100]]
     joueur0.jouer_carte(numero_carte=97, montante=False, id_pile=1)
-    assert joueur0.main == [87, 4, 3, 2]
+    assert joueur0.main == [2, 3, 4, 87]
     assert partie.piles_descendantes == [[100, 99, 98], [100, 97]]
     joueur0.jouer_carte(numero_carte=87, montante=False, id_pile=1)
-    assert joueur0.main == [4, 3, 2]
+    assert joueur0.main == [2, 3, 4]
     assert partie.piles_descendantes == [[100, 99, 98], [100, 97, 87]]
 
 
@@ -38,10 +38,10 @@ def test_jouer_montante_valide():
     joueur0 = partie.list_joueur[0]
     joueur0.complete_main()
     joueur0.jouer_carte(numero_carte=2, montante=True, id_pile=0)
-    assert joueur0.main == [87, 4, 3, 97, 98, 99]
+    assert joueur0.main == [3, 4, 87, 97, 98, 99]
     assert partie.piles_montantes == [[1, 2], [1]]
     joueur0.jouer_carte(numero_carte=3, montante=True, id_pile=0)
-    assert joueur0.main == [87, 4, 97, 98, 99]
+    assert joueur0.main == [4, 87, 97, 98, 99]
     assert partie.piles_montantes == [[1, 2, 3], [1]]
     joueur0.jouer_carte(numero_carte=4, montante=True, id_pile=1)
     assert joueur0.main == [87, 97, 98, 99]
@@ -63,7 +63,7 @@ def test_saut_10():
     joueur0.complete_main()
     joueur0.jouer_carte(numero_carte=97, montante=True, id_pile=0)
     joueur0.jouer_carte(numero_carte=87, montante=True, id_pile=0)
-    assert joueur0.main == [4, 14, 2, 98, 99]
+    assert joueur0.main == [2, 4, 14, 98, 99]
     assert partie.piles_montantes == [[1, 97, 87], [1]]
     joueur0.jouer_carte(numero_carte=4, montante=False, id_pile=1)
     joueur0.jouer_carte(numero_carte=14, montante=False, id_pile=1)

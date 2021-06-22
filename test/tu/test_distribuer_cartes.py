@@ -1,5 +1,6 @@
 import pytest
 
+from model.JoueurModel import Joueur
 from model.PartieModel import Partie
 
 
@@ -28,7 +29,24 @@ def test_distribution_cartes():
             partie.set_nb_joueur(nb_joueur=nb_joueur)
             partie.sabot = list(range(10))
             partie.list_joueur[id_joueur].complete_main()
-            assert partie.sabot + list(reversed(partie.list_joueur[id_joueur].main)) == list(range(10))
+            assert partie.sabot + list(partie.list_joueur[id_joueur].main) == list(range(10))
+
+
+def test_main_est_triee():
+    """
+    Vérifie que la main d'un joueur est triée en permanance
+    :return:
+    """
+    partie = Partie()
+    partie.set_nb_joueur(nb_joueur=1)
+    partie.sabot = [10, 11, 15, 28, 24, 3, 2, 5, 4, 7, 6, ]
+    joueur: Joueur = partie.list_joueur[0]
+    joueur.complete_main()
+    assert partie.list_joueur[0].main == [2, 3, 4, 5, 6, 7, 24, 28]
+    joueur.jouer_carte(numero_carte=6, montante=True, id_pile=0)
+    assert partie.list_joueur[0].main == [2, 3, 4, 5, 7, 24, 28]
+    joueur.complete_main()
+    assert partie.list_joueur[0].main == [2, 3, 4, 5, 7, 15, 24, 28]
 
 
 def test_distribution_sabot_vide():
@@ -42,4 +60,4 @@ def test_distribution_sabot_vide():
     partie.sabot = list(range(4))
     partie.list_joueur[1].complete_main()
     assert partie.sabot == []
-    assert partie.list_joueur[1].main == list(range(3, -1, -1))
+    assert partie.list_joueur[1].main == list(range(4))

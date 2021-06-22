@@ -45,6 +45,7 @@ class Joueur:
             self.main.append(self.partie.sabot.pop())
             logger.debug(f"Main après ajout : {self.main}")
             logger.debug(f"Sabot après ajout : {self.partie.sabot}")
+        self.main.sort()
 
     def jouer_carte(self, numero_carte: int, montante: bool, id_pile: int):
         """
