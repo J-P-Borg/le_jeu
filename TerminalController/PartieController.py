@@ -84,6 +84,7 @@ class PartieController:
                     action, montante, id_pile = PartieView.afficher_jeu(self, message=e)
                 # Sinon on demande la prochaine action du joueur
                 else:
+                    logger.info("La carte demandée est valide")
                     action, montante, id_pile = PartieView.afficher_jeu(self, )
         # Fin de tour valide
         if self.partie.list_joueur[self.joueur].canFinish():

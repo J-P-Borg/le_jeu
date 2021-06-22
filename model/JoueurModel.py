@@ -9,7 +9,6 @@ logger = structlog.getLogger(__name__)
 class Joueur:
     from model.PartieModel import Partie
     def __init__(self, id: int, partie: Partie):
-
         """
         
         :param id:numéro du joueur 
@@ -89,6 +88,6 @@ class Joueur:
         Renvoie si un joueur a joué assez de cartes pour finir son tour (2 si sabot non vide, 1 sinon)
         :return:
         """
-        logger.info(f"Appel de canFinish pour le joueur : {self.id}")
+        logger.info(f"Appel de canFinish pour le joueur {self.id}")
         logger.debug(f"nombre de carte jouée : {self.nb_carte_jouee()}, taille du sabot : {len(self.partie.sabot)}")
         return self.nb_carte_jouee() >= 1 + (len(self.partie.sabot) > 0)
