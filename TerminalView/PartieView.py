@@ -1,6 +1,10 @@
 import sys
 
+import structlog
+
 from TerminalController.PartieController import PartieController
+
+logger = structlog.getLogger(__name__)
 
 
 def configure_nb_joueur(partieController: PartieController):
@@ -27,6 +31,8 @@ def afficher_jeu(partieController: PartieController, message="") -> (int, bool, 
     :param partieController:
     :return: la valeur de la carte à jouer, 0 si fin de tour, is la pile est montante, et l'index de la pile
     """
+    logger.info("Appel de afficher_jeu")
+    logger.debug(f"Message : {message}")
     sys.stdout.flush()
     print(message)
     spacing = len(" Descendante 0 ")
@@ -39,12 +45,30 @@ def afficher_jeu(partieController: PartieController, message="") -> (int, bool, 
     print(f"Tour du joueur {partieController.joueur}")
     print(f"Main du joueur : {partieController.partie.list_joueur[partieController.joueur].main}")
     while True:
-        try:
-            carte = int(input("Carte à jouer :"))
-            montante = bool(int(input("Montante ? (1 si oui, 0 sinon)")))
-            index_pile = int(input("Indice de pile (0 ou 1)"))
-        except:
-            print("Inputs mal formatés, veuillez recommencer")
-        else:
-            break
+        while True:
+            try:
+                carte = int(input("Carte à jouer :"))
+            except:
+                logger.warning("Input carte mal formaté")
+                print("Input carte mal formaté, veuillez recommencer")
+            else:
+                break
+        while True:
+            try:
+                montante = bool(int(input("Montante ? (1 si oui, 0 sinon)")))
+            except:
+                logger.warning("Input montante mal formaté")
+                print("Input montante mal formaté, veuillez recommencer")
+            else:
+                break
+        while True:
+            try:
+                index_pile = int(input("Indice de pile (0 ou 1)"))
+            except:
+                logger.warning("Input index_pile mal formaté")
+                print("Input index_pile mal formatés, veuillez recommencer")
+            else:
+                break
+        logger.info("Inputs avec format valide")
+        break
     return carte, montante, index_pile

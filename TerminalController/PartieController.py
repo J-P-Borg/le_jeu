@@ -65,15 +65,14 @@ class PartieController:
         logger.info(f"montante : {montante}")
         logger.info(f"id_pile: {id_pile}")
         # Tant que le joueur joue des cartes et qu'il n'a pas le droit de finir son tour
-        while action and not (self.partie.list_joueur[self.joueur].canFinish()):
+        while action or not (self.partie.list_joueur[self.joueur].canFinish()):
             logger.info(f"le joueur peut finir son tour : {self.partie.list_joueur[self.joueur].canFinish()}")
             # Le joueur demande à finir mais n'as pas posé assez de cartes
             if not action:
                 logger.warning("Le joueur a demandé à finir son tour sans en avoir le droit")
-                PartieView.afficher_jeu(self, message=PartieController.notEnoughCarteJouee)
+                action, montante, id_pile = PartieView.afficher_jeu(self, message=PAS_ASSEZ_CARTES_JOUEES)
             # Sinon, on vérifie que la carte demandée est valide
             else:
-
                 try:
                     logger.info(f"Essaie de jouer la carte demandée")
                     self.partie.list_joueur[self.joueur].jouer_carte(id_pile=id_pile, montante=montante,
@@ -89,4 +88,5 @@ class PartieController:
         # Fin de tour valide
         if self.partie.list_joueur[self.joueur].canFinish():
             logger.info("fin du tour")
+            self.partie.list_joueur[self.joueur].complete_main()
             self.joueur = (self.joueur + 1) % self.partie.nb_joueur
