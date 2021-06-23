@@ -3,11 +3,12 @@ import sys
 import structlog
 
 from TerminalController.PartieController import PartieController
+from model.PartieModel import Partie
 
 logger = structlog.getLogger(__name__)
 
 
-def configure_nb_joueur(partieController: PartieController):
+def get_nb_joueur() -> int:
     """
     Affiche le champs pour renseigner le nombre de joueur
     Va boucler tant que le nombre de joueur renseigné est incorrect
@@ -16,16 +17,15 @@ def configure_nb_joueur(partieController: PartieController):
     """
     sys.stdout.flush()
     print("Configuration du nombre de joueur")
-    while True:
-        try:
-            partieController.configureNbJoueur(int(input("Entrer nombre joueurs (entre 1 et 5)")))
-        except:
-            print("nombre de joueur incorrect")
-        else:
-            break
+    try:
+        nb_joueur = int(input("Entrer nombre joueurs (entre 1 et 5)"))
+    except:
+        print("nombre de joueur avec un mauvais format")
+    else:
+        return nb_joueur
 
 
-def afficher_jeu(partieController: PartieController, message="") -> (int, bool, int):
+def afficher_jeu(partie: Partie, message="") -> (int, bool, int):
     """
     Affiche la partie avec le jeu du joueur dont c'est le tour
     :param partieController:
@@ -38,12 +38,12 @@ def afficher_jeu(partieController: PartieController, message="") -> (int, bool, 
     spacing = len(" Descendante 0 ")
     print(
         f"{'Descendante 0':<{spacing}}| {'Descendante 1':<{spacing}}| {'Montante 0':<{spacing}}| {'Montante 1':<{spacing}}")
-    pile_desc = partieController.partie.piles_descendantes
-    pile_asc = partieController.partie.piles_montantes
+    pile_desc = partie.piles_descendantes
+    pile_asc = partie.piles_montantes
     print(
         f"{pile_desc[0][-1]:<{spacing}}| {pile_desc[1][-1]:<{spacing}}| {pile_asc[0][-1] :<{spacing}}| {pile_asc[1][-1]:<{spacing}}")
-    print(f"Tour du joueur {partieController.joueur}")
-    print(f"Main du joueur : {partieController.partie.list_joueur[partieController.joueur].main}")
+    print(f"Tour du joueur {partie.joueur}")
+    print(f"Main du joueur : {partie.list_joueur[partie.joueur].main}")
     while True:
         while True:
             try:

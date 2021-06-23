@@ -8,37 +8,31 @@ logger = structlog.getLogger(__name__)
 
 class PartieController:
 
-
     def __init__(self):
         """
         joueur : indice du joueur qui doit faire son tour
         termine : True quand la partie est finie
         """
         logger.info("Creation du controller de partie")
-        self.partie = Partie()
-        self.joueur = 0
         self.termine = False
+        self.initPartie()
 
-    def configurePartie(self):
+    def initPartie(self):
         """
-        Va appeler les différentes fonctions de config d'une partie
-        * Configurer le nombre de joueur
-        * Distribuer les mains initiales
-        :return:
+        Va instancier la partie
+        Va récupérer le nombre de joueurs, nécesaire pour instancier la partie
         """
-        from TerminalView import PartieView
-        logger.info("Config de la partie dans le controller")
-        PartieView.configure_nb_joueur(self)
-        self.partie.distribueMainsInitiales()
-
-    def configureNbJoueur(self, nbJoueur: int):
-        """
-        :param nbJoueur: nombre de joueur renseigné par l'utilisateur dans le model
-        :raises ValueError: erreur levée par set_nb_joueur
-        """
-        logger.info(f"configuration du nombre de joueur, {nbJoueur} demandés")
-        logger.debug(f"type de nbJoueur : {type(nbJoueur)}")
-        self.partie.set_nb_joueur(nb_joueur=nbJoueur)
+        while True:
+            try:
+                from TerminalView.PartieView import get_nb_joueur
+                nbJoueur = get_nb_joueur()
+                logger.debug(f"type de nbJoueur : {type(nbJoueur)}")
+                logger.info(f"Création d'une partie avec {nbJoueur} demandés")
+                self.partie = Partie(nb_joueur=nbJoueur)
+            except:
+                pass
+            else:
+                break
 
     def jouerPartie(self):
         """
@@ -47,17 +41,16 @@ class PartieController:
         :return:
         """
         logger.info("Début de partie")
-        self.configurePartie()
         while not self.termine:
             self.jouerTour()
 
     def jouerTour(self):
         """
-        Va jouer le tour du joueur self.joueur
+        Va jouer le tour du joueur self.partie.joueur
         Va changer passer au joueur suivant une fois le tour du joueur terminé
         :return:
         """
-        logger.info(f"Début du tour de {self.joueur}")
+        logger.info(f"Début du tour de {self.partie.joueur}")
         from TerminalView import PartieView
         # Récupération des inputs du joueur
         action, montante, id_pile = PartieView.afficher_jeu(self)
@@ -65,8 +58,8 @@ class PartieController:
         logger.info(f"montante : {montante}")
         logger.info(f"id_pile: {id_pile}")
         # Tant que le joueur joue des cartes et qu'il n'a pas le droit de finir son tour
-        while action or not (self.partie.list_joueur[self.joueur].canFinish()):
-            logger.info(f"le joueur peut finir son tour : {self.partie.list_joueur[self.joueur].canFinish()}")
+        while action or not (self.partie.list_joueur[self.partie.joueur].canFinish()):
+            logger.info(f"le joueur peut finir son tour : {self.partie.list_joueur[self.partie.joueur].canFinish()}")
             # Le joueur demande à finir mais n'as pas posé assez de cartes
             if not action:
                 logger.warning("Le joueur a demandé à finir son tour sans en avoir le droit")
@@ -75,8 +68,8 @@ class PartieController:
             else:
                 try:
                     logger.info(f"Essaie de jouer la carte demandée")
-                    self.partie.list_joueur[self.joueur].jouer_carte(id_pile=id_pile, montante=montante,
-                                                                     numero_carte=action)
+                    self.partie.list_joueur[self.partie.joueur].jouer_carte(id_pile=id_pile, montante=montante,
+                                                                            numero_carte=action)
                 # Si la carte est invalide, on redemande une carte
                 except Exception as e:
                     logger.warning("La carte est invalide")
@@ -86,7 +79,7 @@ class PartieController:
                     logger.info("La carte demandée est valide")
                     action, montante, id_pile = PartieView.afficher_jeu(self, )
         # Fin de tour valide
-        if self.partie.list_joueur[self.joueur].canFinish():
+        if self.partie.list_joueur[self.partie.joueur].canFinish():
             logger.info("fin du tour")
-            self.partie.list_joueur[self.joueur].complete_main()
-            self.joueur = (self.joueur + 1) % self.partie.nb_joueur
+            self.partie.list_joueur[self.partie.joueur].complete_main()
+            self.partie.joueur = (self.partie.joueur + 1) % self.partie.nb_joueur

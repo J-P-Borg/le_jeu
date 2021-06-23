@@ -12,13 +12,28 @@ class Partie:
     Model d'une partie, va gérer le sabot et les mains des joueurs
     """
 
-    def __init__(self) -> object:
+    def __init__(self, nb_joueur: int) -> object:
+        """
+        Crée la partie
+        Crée le sabot de carte
+        Vérifie que le nombre de joueur est correct
+        Distribue les mains initiales
+        Initialise les piles
+        La partie est jouable
+        :param nb_joueur: nombre de joueur dans la partie
+        :raises ValueError: si nb_joueur n'a pas une valeur entre 1 et 5 inclus
+        """
         self.sabot = list(range(2, 100))
+        logger.debug(f"Sabot pas mélangé: {self.sabot}")
         rd.shuffle(self.sabot)
         logger.debug(f"Sabot : {self.sabot}")
-        self.list_joueur = []
+        self._set_nb_joueur(nb_joueur=nb_joueur)
+        self._distribueMainsInitiales()
+        logger.info(f"taille_main =: {self.taille_main}")
+        logger.debug(f"list_joueur: {self.list_joueur}")
         self.piles_descendantes = [[100], [100]]
         self.piles_montantes = [[1], [1]]
+        self.joueur = 0
 
     def check_config(self, id_joueur: int):
         """
@@ -39,7 +54,7 @@ class Partie:
         logger.info(f"Vérifie que l'id_joueur {id_joueur} est valide")
         assert 0 <= id_joueur < self.nb_joueur, ID_JOUEUR_INCORRECT
 
-    def set_nb_joueur(self, nb_joueur: int):
+    def _set_nb_joueur(self, nb_joueur: int):
         """
         :param nb_joueur: nombre de joueur de la partie
         Va affecter le nombre de joueur, et vérifie qu'il est valide (entre 1 et 5 inclus)
@@ -50,21 +65,18 @@ class Partie:
         if not type(nb_joueur) == int:
             logger.error(f"appel de set_nb_joueur avec un mauvais type ({type(nb_joueur)} au lieu de int")
             raise TypeError("Le nombre de joueur doit être de type int")
-        from model.JoueurModel import Joueur
         logger.info(f"Config du nombre de joueur, {nb_joueur} joueurs")
         if nb_joueur in range(1, 6):
             logger.info("nombre de joueur correct")
             self.nb_joueur = nb_joueur
-            self.set_taille_main()
+            from model.JoueurModel import Joueur
             self.list_joueur = [Joueur(id=i, partie=self) for i in range(self.nb_joueur)]
-            logger.info(f"taille_main =: {self.taille_main}")
-            logger.debug(f"list_joueur: {self.list_joueur}")
         else:
             logger.warning(
                 f"nombre de joueur {nb_joueur} incorrect, car {nb_joueur} dans range(1,6) : {nb_joueur in range(1, 6)}")
             raise ValueError("Nombre de joueur incorrect")
 
-    def set_taille_main(self):
+    def _set_taille_main(self):
         """
         Configure la taille des mains selon le nombre de joueurs
         8 cartes si 1 joueur
@@ -80,11 +92,12 @@ class Partie:
             logger.error("Le nombre de joueur n'a pas été défini, doit l'être avant l'appel de cette fonction")
             raise AttributeError("le nombre de joueur n'est pas défini")
 
-    def distribueMainsInitiales(self):
+    def _distribueMainsInitiales(self):
         """
         Distribue toutes les mains initiales
         :return: 
         """
+        self._set_taille_main()
         logger.info("Distribution des mains de départ")
         logger.debug(f"liste des joueurs : {self.list_joueur}")
         for joueur in self.list_joueur:

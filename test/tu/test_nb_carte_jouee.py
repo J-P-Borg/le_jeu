@@ -7,9 +7,7 @@ def test_nb_carte_jouee():
     :return:
     """
     for nb_joueur in range(1, 6):
-        partie = Partie()
-        partie.set_nb_joueur(nb_joueur=nb_joueur)
-        partie.distribueMainsInitiales()
+        partie = Partie(nb_joueur=nb_joueur)
         joueur = partie.list_joueur[0]
         joueur.main.sort()
         assert joueur.nb_carte_jouee() == 0

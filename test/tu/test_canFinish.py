@@ -9,9 +9,7 @@ def test_canFinish_sabot_plein():
     2 : TRUE
     :return:
     """
-    partie = Partie()
-    partie.set_nb_joueur(2)
-    partie.distribueMainsInitiales()
+    partie = Partie(2)
     joueur0: Joueur = partie.list_joueur[0]
     # Aucune carte jouée : NON
     assert not joueur0.canFinish()
@@ -30,9 +28,7 @@ def test_canFinish_sabot_vide():
     2 : TRUE
     :return:
     """
-    partie = Partie()
-    partie.set_nb_joueur(2)
-    partie.distribueMainsInitiales()
+    partie = Partie(2)
     joueur0: Joueur = partie.list_joueur[0]
     partie.sabot = []
     # Aucune carte jouée : NON

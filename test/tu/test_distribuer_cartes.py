@@ -9,11 +9,9 @@ def test_taille_main():
     Vérifie que la variable taille main est correctement définie
     :return:
     """
-    partie = Partie()
     aux = [(1, 8), (2, 7), (3, 6), (4, 6), (5, 6)]
     for nb_joueur, taille_main in aux:
-        partie.set_nb_joueur(nb_joueur)
-        partie.set_taille_main()
+        partie = Partie(nb_joueur)
         assert partie.taille_main == taille_main
 
 
@@ -25,9 +23,9 @@ def test_distribution_cartes():
     """
     for nb_joueur in range(1, 6):
         for id_joueur in range(nb_joueur):
-            partie = Partie()
-            partie.set_nb_joueur(nb_joueur=nb_joueur)
+            partie = Partie(nb_joueur)
             partie.sabot = list(range(10))
+            partie.list_joueur[id_joueur].main = []
             partie.list_joueur[id_joueur].complete_main()
             assert partie.sabot + list(partie.list_joueur[id_joueur].main) == list(range(10))
 
@@ -37,10 +35,10 @@ def test_main_est_triee():
     Vérifie que la main d'un joueur est triée en permanance
     :return:
     """
-    partie = Partie()
-    partie.set_nb_joueur(nb_joueur=1)
+    partie = Partie(1)
     partie.sabot = [10, 11, 15, 28, 24, 3, 2, 5, 4, 7, 6, ]
     joueur: Joueur = partie.list_joueur[0]
+    joueur.main = []
     joueur.complete_main()
     assert partie.list_joueur[0].main == [2, 3, 4, 5, 6, 7, 24, 28]
     joueur.jouer_carte(numero_carte=6, montante=True, id_pile=0)
@@ -55,9 +53,9 @@ def test_distribution_sabot_vide():
     (Arrive en fin de partie)
     :return:
     """
-    partie = Partie()
-    partie.set_nb_joueur(3)
+    partie = Partie(3)
     partie.sabot = list(range(4))
+    partie.list_joueur[1].main = []
     partie.list_joueur[1].complete_main()
     assert partie.sabot == []
     assert partie.list_joueur[1].main == list(range(4))
