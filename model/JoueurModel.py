@@ -65,7 +65,7 @@ class Joueur:
         # Vérifie que la pile demandée est valide&
         logger.info("Vérification indice de pile entre 0 et 1")
         assert 0 <= id_pile <= 1, NUMERO_PILE_INCORRECT
-        # Vérifie que la carte est jouable
+        # Vérifie que la carte est jouable sur la pile demandée
         if montante:
             derniere_carte = self.partie.piles_montantes[id_pile][-1]
             logger.debug(f"Dernière carte pile demandée : {derniere_carte}")
@@ -83,6 +83,28 @@ class Joueur:
             self.partie.piles_montantes[id_pile].append(numero_carte)
         else:
             self.partie.piles_descendantes[id_pile].append(numero_carte)
+
+    def canJouer(self):
+        """
+        Vérifie si le joueur peut encore jouer des cartes
+        :return:
+        """
+        return any(map(lambda x: self.canJouerCarte(x), self.main))
+
+    def canJouerCarte(self, carte: int) -> bool:
+        """
+        Regarde si la carte est jouable
+        :param carte: carte à vérifier
+        :return: le booléan indiquant si la carte est jouable
+        """
+        logger.info(f"Vérifie si la carte {carte} est jouable")
+        jouable = False
+        for pile in self.partie.piles_montantes:
+            jouable = jouable or ((carte > pile[-1]) or (carte == pile[-1] - 10))
+        for pile in self.partie.piles_descendantes:
+            jouable = jouable or ((carte < pile[-1]) or (carte == pile[-1] + 10))
+        logger.debug(f"La carte {carte} est jouable : {jouable}")
+        return jouable
 
     def canFinish(self) -> bool:
         """

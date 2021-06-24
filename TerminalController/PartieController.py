@@ -40,9 +40,12 @@ class PartieController:
         Va faire passer les tours les uns après les autres
         :return:
         """
+        from TerminalView.PartieView import finPartie
         logger.info("Début de partie")
-        while not self.termine:
+        while not self.partie.estGagnee() or not self.partie.estPerdue():
             self.jouerTour()
+        finPartie(self)
+        return 0
 
     def jouerTour(self):
         """
@@ -58,7 +61,8 @@ class PartieController:
         logger.info(f"montante : {montante}")
         logger.info(f"id_pile: {id_pile}")
         # Tant que le joueur joue des cartes et qu'il n'a pas le droit de finir son tour
-        while action or not (self.partie.list_joueur[self.partie.joueur].canFinish()):
+        while action or not (
+        self.partie.list_joueur[self.partie.joueur].canFinish()) or self.partie.estPerdue() or self.partie.estGagnee():
             logger.info(f"le joueur peut finir son tour : {self.partie.list_joueur[self.partie.joueur].canFinish()}")
             # Le joueur demande à finir mais n'as pas posé assez de cartes
             if not action:

@@ -72,3 +72,31 @@ def afficher_jeu(partie: Partie, message="") -> (int, bool, int):
         logger.info("Inputs avec format valide")
         break
     return carte, montante, index_pile
+
+
+def finPartie(partie: Partie):
+    """
+    Affiche :
+    * les piles
+    * gagné ou perdu
+    * si perdu : le score
+    :param partie:
+    :return:
+    :raises AssertionError: si la partie n'est pas finie
+    """
+    assert partie.estGagnee() or partie.estPerdue(), "La partie n'est pas finie"
+    logger.info("Appel de fin de partie")
+    sys.stdout.flush()
+    spacing = len(" Descendante 0 ")
+    print(
+        f"{'Descendante 0':<{spacing}}| {'Descendante 1':<{spacing}}| {'Montante 0':<{spacing}}| {'Montante 1':<{spacing}}")
+    pile_desc = partie.piles_descendantes
+    pile_asc = partie.piles_montantes
+    print(
+        f"{pile_desc[0][-1]:<{spacing}}| {pile_desc[1][-1]:<{spacing}}| {pile_asc[0][-1] :<{spacing}}| {pile_asc[1][-1]:<{spacing}}")
+    if partie.estGagnee():
+        print("Bravo, vous avez gagné")
+    else:
+        print(f"Vous avez perdu, avec un score de {partie.score()}")
+
+    return 0

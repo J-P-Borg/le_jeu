@@ -50,7 +50,7 @@ class Partie:
             self.nb_joueur
         except:
             logger.warning("taille_main aurait du être défini, non critique (tentative de définition ici)")
-            self.set_taille_main()
+            self._set_taille_main()
         logger.info(f"Vérifie que l'id_joueur {id_joueur} est valide")
         assert 0 <= id_joueur < self.nb_joueur, ID_JOUEUR_INCORRECT
 
@@ -102,3 +102,25 @@ class Partie:
         logger.debug(f"liste des joueurs : {self.list_joueur}")
         for joueur in self.list_joueur:
             joueur.complete_main()
+
+    def score(self):
+        """
+        Retourne le nombre de carte restant à jouer, ce qui correspond au score en fin de partie
+        :return:
+        """
+        return len(self.sabot) + sum(map(lambda x: len(x.main), self.list_joueur))
+
+    def estGagnee(self) -> bool:
+        """
+        Indique si la partie est gagnée
+        :return:
+        """
+        return not self.score()
+
+    def estPerdue(self) -> bool:
+        """
+        Indique si la partie est perdue
+        :return:
+        """
+        joueur = self.list_joueur[self.joueur]
+        return not joueur.canJouer() and not joueur.canFinish()
