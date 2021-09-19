@@ -21,6 +21,6 @@ def test_nb_joueur_correct():
     Vérifie qu'il est possible de configurer une partie avec 1,2,3,4,5 joueurs
     :return:
     """
-    for i in range(1, 6):
+    for i in range(1, 6):				# Pourquoi 1,6, alors que le nb. de joueurs est entre 1 et 5 ?
         partie = Partie(i)
         assert partie.nb_joueur == i

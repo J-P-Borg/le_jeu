@@ -27,7 +27,7 @@ def test_jouer_descandante_valide():
 
 def test_jouer_montante_valide():
     """
-    Vérifie qu'un joueur peut jouer une carte plus faible sur une pile montante
+    Vérifie qu'un joueur peut jouer une carte plus forte sur une pile montante
     :return:
     """
     partie = Partie(1)

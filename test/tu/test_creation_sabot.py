@@ -14,5 +14,5 @@ def test_creation_sabot(monkeypatch):
     # La main du joueur a été distribuée, il faut la prendre en compte
     partie.sabot.extend(partie.list_joueur[0].main)
     partie.sabot.sort()
-    # Le jeu dois contenir les cartes de 2 à 99
+    # Le jeu doit contenir les cartes de 2 à 99
     assert partie.sabot == jeu_trie

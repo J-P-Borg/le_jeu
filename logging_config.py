@@ -43,7 +43,13 @@ def config_logging(terminal=True):
                 "level": "DEBUG",
                 "propagate": True,
             },
-        }}
+        }
+	}
+	"""
+	Déplacé la dernière accolade (cohérence globale des {})
+	Ajouté un SDL pour la clarté
+	"""
+	
     if terminal:
         logging_config["loggers"][""]["handlers"].append("default")
     logging.config.dictConfig(logging_config)

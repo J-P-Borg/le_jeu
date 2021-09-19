@@ -3,7 +3,7 @@ from model.PartieModel import Partie
 
 def test_nb_carte_jouee():
     """
-    Vérifie qu'il est possible de savoir combien de carte le joueur a joué pendant son tour
+    Vérifie qu'il est possible de savoir combien de cartes le joueur a joué pendant son tour
     :return:
     """
     for nb_joueur in range(1, 6):

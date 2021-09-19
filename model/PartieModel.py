@@ -16,11 +16,11 @@ class Partie:
         """
         Crée la partie
         Crée le sabot de carte
-        Vérifie que le nombre de joueur est correct
+        Vérifie que le nombre de joueurs est correct
         Distribue les mains initiales
         Initialise les piles
         La partie est jouable
-        :param nb_joueur: nombre de joueur dans la partie
+        :param nb_joueur: nombre de joueurs dans la partie
         :raises ValueError: si nb_joueur n'a pas une valeur entre 1 et 5 inclus
         """
         self.sabot = list(range(2, 100))
@@ -56,25 +56,25 @@ class Partie:
 
     def _set_nb_joueur(self, nb_joueur: int):
         """
-        :param nb_joueur: nombre de joueur de la partie
-        Va affecter le nombre de joueur, et vérifie qu'il est valide (entre 1 et 5 inclus)
+        :param nb_joueur: nombre de joueurs de la partie
+        Va affecter le nombre de joueurs, et vérifie qu'il est valide (entre 1 et 5 inclus)
         Instancie les joueurs
-        :raises: ValueError, si le nombre de joueur n'est pas valide
+        :raises: ValueError, si le nombre de joueurs n'est pas valide
         :raises: TypeError si le type de nb_joueur n'est pas valide
         """
         if not type(nb_joueur) == int:
             logger.error(f"appel de set_nb_joueur avec un mauvais type ({type(nb_joueur)} au lieu de int")
-            raise TypeError("Le nombre de joueur doit être de type int")
-        logger.info(f"Config du nombre de joueur, {nb_joueur} joueurs")
+            raise TypeError("Le nombre de joueurs doit être de type int")
+        logger.info(f"Config du nombre de joueurs, {nb_joueur} joueurs")
         if nb_joueur in range(1, 6):
-            logger.info("nombre de joueur correct")
+            logger.info("nombre de joueurs correct")
             self.nb_joueur = nb_joueur
             from model.JoueurModel import Joueur
             self.list_joueur = [Joueur(id=i, partie=self) for i in range(self.nb_joueur)]
         else:
             logger.warning(
-                f"nombre de joueur {nb_joueur} incorrect, car {nb_joueur} dans range(1,6) : {nb_joueur in range(1, 6)}")
-            raise ValueError("Nombre de joueur incorrect")
+                f"nombre de joueurs {nb_joueur} incorrect, car {nb_joueur} dans range(1,6) : {nb_joueur in range(1, 6)}")
+            raise ValueError("Nombre de joueurs incorrect")
 
     def _set_taille_main(self):
         """
@@ -89,8 +89,8 @@ class Partie:
             logger.info("Config de la taille des mains")
             self.taille_main = 6 + (self.nb_joueur <= 2) + (self.nb_joueur == 1)
         except:
-            logger.error("Le nombre de joueur n'a pas été défini, doit l'être avant l'appel de cette fonction")
-            raise AttributeError("le nombre de joueur n'est pas défini")
+            logger.error("Le nombre de joueurs n'a pas été défini, il doit l'être avant l'appel de cette fonction")
+            raise AttributeError("Le nombre de joueurs n'est pas défini")
 
     def _distribueMainsInitiales(self):
         """
@@ -105,7 +105,7 @@ class Partie:
 
     def score(self):
         """
-        Retourne le nombre de carte restant à jouer, ce qui correspond au score en fin de partie
+        Retourne le nombre de cartes restant à jouer, ce qui correspond au score en fin de partie
         :return:
         """
         return len(self.sabot) + sum(map(lambda x: len(x.main), self.list_joueur))

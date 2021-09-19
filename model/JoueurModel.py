@@ -21,18 +21,18 @@ class Joueur:
 
     def nb_carte_jouee(self) -> int:
         """
-        Calcule le nombre de carte jouées par le joueur en fonction de la taille de sa main et de la taille d'une main
-        (qui dépend du nombre de joueur de la partie)
+        Calcule le nombre de cartes jouées par le joueur en fonction de la taille de sa main et de la taille d'une main
+        (qui dépend du nombre de joueurs de la partie)
         :return:
         """
         logger.info("Appel nb_carte_jouee")
-        logger.debug(f"taille main max : {self.partie.taille_main}, nombre de carte du joueur : {len(self.main)}")
+        logger.debug(f"taille main max : {self.partie.taille_main}, nombre de cartes du joueur : {len(self.main)}")
         return self.partie.taille_main - len(self.main)
 
     def complete_main(self):
         """
-        Distribue dans la main du joueur self.self.id le nombre de carte nécessaire pour qu'il ait une main valide
-        (cf taille_main : variable globale de taille de main, selon le nombre de joueur)
+        Distribue dans la main du joueur self.self.id le nombre de cartes nécessaire pour qu'il ait une main valide
+        (cf taille_main : variable globale de taille de main, selon le nombre de joueurs)
         :param self.id: id du joueur (indice du jeu à compléter)
         :return:
         """
@@ -57,12 +57,12 @@ class Joueur:
         :return:
         """
         self.partie.check_config(self.id)
-        # Vérifie que la carte
+        # Vérifie que la carte ???
         logger.info(f"demande pour jouer la carte {numero_carte} pour le joueur {self.id}")
         logger.debug(f"Main du joueur : {self.main}")
         logger.info("Vérification carte dans main")
         assert numero_carte in self.main, MESSAGE_CARTE_PAS_DANS_MAIN
-        # Vérifie que la pile demandée est valide&
+        # Vérifie que la pile demandée est valide
         logger.info("Vérification indice de pile entre 0 et 1")
         assert 0 <= id_pile <= 1, NUMERO_PILE_INCORRECT
         # Vérifie que la carte est jouable sur la pile demandée
@@ -108,9 +108,9 @@ class Joueur:
 
     def canFinish(self) -> bool:
         """
-        Renvoie si un joueur a joué assez de cartes pour finir son tour (2 si sabot non vide, 1 sinon)
+        Renvoie ??? si un joueur a joué assez de cartes pour finir son tour (2 si sabot non vide, 1 sinon)
         :return:
         """
         logger.info(f"Appel de canFinish pour le joueur {self.id}")
-        logger.debug(f"nombre de carte jouée : {self.nb_carte_jouee()}, taille du sabot : {len(self.partie.sabot)}")
+        logger.debug(f"nombre de cartes jouées : {self.nb_carte_jouee()}, taille du sabot : {len(self.partie.sabot)}")
         return self.nb_carte_jouee() >= 1 + (len(self.partie.sabot) > 0)

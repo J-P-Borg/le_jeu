@@ -50,7 +50,7 @@ class PartieController:
     def jouerTour(self):
         """
         Va jouer le tour du joueur self.partie.joueur
-        Va changer passer au joueur suivant une fois le tour du joueur terminé
+        Va changer passer ??? au joueur suivant une fois le tour du joueur terminé
         :return:
         """
         logger.info(f"Début du tour de {self.partie.joueur}")
@@ -60,11 +60,12 @@ class PartieController:
         logger.info(f"action demandée : {action}")
         logger.info(f"montante : {montante}")
         logger.info(f"id_pile: {id_pile}")
+		
         # Tant que le joueur joue des cartes et qu'il n'a pas le droit de finir son tour
         while action or not (
         self.partie.list_joueur[self.partie.joueur].canFinish()) or self.partie.estPerdue() or self.partie.estGagnee():
             logger.info(f"le joueur peut finir son tour : {self.partie.list_joueur[self.partie.joueur].canFinish()}")
-            # Le joueur demande à finir mais n'as pas posé assez de cartes
+            # Le joueur demande à finir mais n'a pas posé assez de cartes
             if not action:
                 logger.warning("Le joueur a demandé à finir son tour sans en avoir le droit")
                 action, montante, id_pile = PartieView.afficher_jeu(self, message=PAS_ASSEZ_CARTES_JOUEES)
@@ -82,6 +83,7 @@ class PartieController:
                 else:
                     logger.info("La carte demandée est valide")
                     action, montante, id_pile = PartieView.afficher_jeu(self, )
+					
         # Fin de tour valide
         if self.partie.list_joueur[self.partie.joueur].canFinish():
             logger.info("fin du tour")

@@ -4,8 +4,8 @@ from TerminalController.PartieController import PartieController
 
 def test_config_partie_nb_correct(monkeypatch):
     """
-    Test le controller de partie, et vérifie qu'il permet à l'utilisateur de config une partie correctement,
-    avec un nmobre de joueur correct
+    Teste le controller de partie, et vérifie qu'il permet à l'utilisateur de configurer une partie correctement,
+    avec un nombre de joueurs correct
     :return:
     """
     nb_joueur = 5
@@ -16,5 +16,5 @@ def test_config_partie_nb_correct(monkeypatch):
 
 
 def test_config_partie_nb_incorrect():
-    # TODO tester le message d'erreur en cs d'input invalide
+    # TODO tester le message d'erreur en cas d'input invalide
     pass

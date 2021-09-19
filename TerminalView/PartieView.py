@@ -10,17 +10,17 @@ logger = structlog.getLogger(__name__)
 
 def get_nb_joueur() -> int:
     """
-    Affiche le champs pour renseigner le nombre de joueur
-    Va boucler tant que le nombre de joueur renseigné est incorrect
+    Affiche le champ pour renseigner le nombre de joueurs
+    Va boucler tant que le nombre de joueurs renseigné est incorrect
     :param partieController: controller de partie
     :return:
     """
     sys.stdout.flush()
-    print("Configuration du nombre de joueur")
+    print("Configuration du nombre de joueurs")
     try:
         nb_joueur = int(input("Entrer nombre joueurs (entre 1 et 5)"))
     except:
-        print("nombre de joueur avec un mauvais format")
+        print("nombre de joueurs avec un mauvais format")
     else:
         return nb_joueur
 
@@ -29,7 +29,7 @@ def afficher_jeu(partie: Partie, message="") -> (int, bool, int):
     """
     Affiche la partie avec le jeu du joueur dont c'est le tour
     :param partieController:
-    :return: la valeur de la carte à jouer, 0 si fin de tour, is la pile est montante, et l'index de la pile
+    :return: la valeur de la carte à jouer, 0 si fin de tour, is ??? la pile est montante, et l'index de la pile
     """
     logger.info("Appel de afficher_jeu")
     logger.debug(f"Message : {message}")
@@ -44,6 +44,7 @@ def afficher_jeu(partie: Partie, message="") -> (int, bool, int):
         f"{pile_desc[0][-1]:<{spacing}}| {pile_desc[1][-1]:<{spacing}}| {pile_asc[0][-1] :<{spacing}}| {pile_asc[1][-1]:<{spacing}}")
     print(f"Tour du joueur {partie.joueur}")
     print(f"Main du joueur : {partie.list_joueur[partie.joueur].main}")
+	
     while True:
         while True:
             try:
@@ -58,7 +59,7 @@ def afficher_jeu(partie: Partie, message="") -> (int, bool, int):
                 montante = bool(int(input("Montante ? (1 si oui, 0 sinon)")))
             except:
                 logger.warning("Input montante mal formaté")
-                print("Input montante mal formaté, veuillez recommencer")
+                print("Input montante mal formaté, veuillez recommencer")	# ??? indiquer ce que doit être le bon format
             else:
                 break
         while True:
@@ -66,7 +67,7 @@ def afficher_jeu(partie: Partie, message="") -> (int, bool, int):
                 index_pile = int(input("Indice de pile (0 ou 1)"))
             except:
                 logger.warning("Input index_pile mal formaté")
-                print("Input index_pile mal formatés, veuillez recommencer")
+                print("Input index_pile mal formatés, veuillez recommencer")	# ??? indiquer ce que doit être le bon format
             else:
                 break
         logger.info("Inputs avec format valide")
@@ -94,6 +95,7 @@ def finPartie(partie: Partie):
     pile_asc = partie.piles_montantes
     print(
         f"{pile_desc[0][-1]:<{spacing}}| {pile_desc[1][-1]:<{spacing}}| {pile_asc[0][-1] :<{spacing}}| {pile_asc[1][-1]:<{spacing}}")
+		
     if partie.estGagnee():
         print("Bravo, vous avez gagné")
     else:

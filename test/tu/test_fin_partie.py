@@ -3,7 +3,7 @@ from model.PartieModel import Partie
 
 def test_score():
     """
-    Vérifie qu'il est possible de calculer le score d'une partie en cour
+    Vérifie qu'il est possible de calculer le score d'une partie en cours
     :return:
     """
     partie = Partie(1)

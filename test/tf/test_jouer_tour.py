@@ -5,7 +5,7 @@
 #
 # def test_jouer_tour():
 #     """
-#     Test qu'un joueur peut jouer correctement son tour
+#     Teste qu'un joueur peut jouer correctement son tour
 #     Cas à vérifier avec les messages d'erreur:
 #     * carte invalide
 #     * fin de tour non autorisée

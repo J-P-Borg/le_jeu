@@ -17,8 +17,8 @@ def test_taille_main():
 
 def test_distribution_cartes():
     """
-    Test que les cartes sont bien distribuées dans le cas ou il y a assez de cartes dans le sabot
-    Test pour un id de joueur correct
+    Teste que les cartes sont bien distribuées dans le cas où il y a assez de cartes dans le sabot
+    Teste pour un id de joueur correct
     :return:
     """
     for nb_joueur in range(1, 6):
